@@ -1,6 +1,7 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 import hero from '../../img/Home/hero.jpg'
+import { Box, Button, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 
 const useStyles = makeStyles((theme)=>({
     hero: {
@@ -14,8 +15,7 @@ const useStyles = makeStyles((theme)=>({
         justifyContent: "center",
         alignItems: "center",
         color: "#fff",
-        fontSize: "4rem",
-        marginTop:'-20px',        
+        fontSize: "4rem",              
         textAlign: 'center',
         [theme.breakpoints.down("sm")]: {
             height: 300,
@@ -26,12 +26,13 @@ const useStyles = makeStyles((theme)=>({
 
 const Hero = () => {
     const classes = useStyles();
+    const history = useHistory();
     return (
         <Box className={classes.hero}>
             <Box>
-                <Typography variant="h4">Selling The Best Burgers In Charlotte</Typography>
-                <Typography >We focus on making fresh meals for you everyday using the freshest ingredients</Typography>
-                <Button variant="contained" color="primary">Order now</Button>
+                <Typography variant="h2">Welcome To 220°C</Typography>
+                <Typography variant="h6">- Insert something catchy here -</Typography>                
+                <Button variant="contained" color="primary" onClick={()=> history.push('/menu')}>Order now</Button>
             </Box>
         </Box>
     )

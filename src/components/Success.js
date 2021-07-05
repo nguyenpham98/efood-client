@@ -1,9 +1,14 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import {useHistory} from 'react-router-dom'
+import hero from '../img/Home/hero.jpg'
+import { CartContext } from './CartContext'
+
+
 
 const useStyles = makeStyles((theme) => ({
     hero: {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1558981852-426c6c22a060?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80')`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${hero})`,
         height: "500px",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -14,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         color: "#fff",
         fontSize: "4rem",
-        marginTop: '-20px',
+        
         textAlign: 'center',
         [theme.breakpoints.down("sm")]: {
             height: 300,
@@ -25,12 +30,24 @@ const useStyles = makeStyles((theme) => ({
 
 const Success = () => {
     const classes = useStyles()
+    const history = useHistory()
+    const {setCart} = useContext(CartContext)
+    
+    
+    useEffect(() => {        
+        const clearAll = () => {
+            localStorage.removeItem('cart')
+            localStorage.removeItem('total')
+            setCart([])
+        }
+        clearAll();
+    }, [setCart])
     return (
         <Box className={classes.hero}>
             <Box>
                 <Typography variant="h2" gutterBottom>Thank you for your order.</Typography>
                 <Typography>Check your email for the order receipt number.</Typography>
-                <Button variant="contained" color="secondary">Continue shopping</Button>
+                <Button variant="contained" color="primary" onClick={() => history.push('/menu')}>Continue Shopping</Button>
             </Box>
         </Box>
     )

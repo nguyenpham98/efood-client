@@ -5,8 +5,8 @@ const useStyles = makeStyles(theme => ({
     container: {
         overflowWrap: 'break-word',
         textAlign: 'center', 
-        height: '100px',
-        backgroundColor: 'lightyellow',
+        height: '600px',
+        backgroundColor: '#06AED5',
         padding: '10px 0px',
         [theme.breakpoints.down("sm")]: {
             height: '200px', 
@@ -14,11 +14,12 @@ const useStyles = makeStyles(theme => ({
         }
     },
     card: {
-        height:'95px',
-        margin: '0px 20px',
+        height:'150px',
+        margin: '220px 450px',
         
         [theme.breakpoints.down("sm")]: {
-            height: '190px',
+            height: '180px',
+            margin: '15px 80px'
         }
     }
 }))

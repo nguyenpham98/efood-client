@@ -4,13 +4,15 @@ import Logo from '../img/logo.jpg'
 
 const useStyles = makeStyles(theme =>({
     container: {
-        padding: '10px',
-        
+        padding: '40px 0px',
+        color:'#FFFFFF',
+        height: '150px',
         [theme.breakpoints.down('xs')]: {
             paddingRight: '50px',
+            height: '200px'
             
         },
-        backgroundColor: 'lightgreen',   
+        backgroundColor: '#494449',
         
     },
     logo: {

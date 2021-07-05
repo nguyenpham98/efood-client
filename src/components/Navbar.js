@@ -6,13 +6,16 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import FastfoodOutlinedIcon from '@material-ui/icons/FastfoodOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
 import Logo from '../img/logo.jpg'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
         background: '#fff176',
-        marginBottom: 20
+        height: '100px',
+        padding: '10px'
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -21,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     
     list: {
         width:250,
+    },
+    listItem: {
+        margin: '20px 0 15px 0'
     }
     
 }))
@@ -43,24 +49,32 @@ const Navbar = () => {
                         <Avatar alt="logo" src={Logo} variant="rounded" component={Link} to='/' ></Avatar>
                     </Box>
                     <Button component={Link} to='/cart'>
-                        <ShoppingBasketOutlinedIcon/>
+                        <ShoppingCartOutlinedIcon fontSize="large" color="primary"/>
                     </Button>                                  
                 </Toolbar>            
             </AppBar>
             <Drawer anchor='left' open={isDrawerOpened} onClose={toggleDrawer} >
                 <List className={classes.list}>
-                    <ListItem button component={Link} to="/" onClick={toggleDrawer}>
-                        <ListItemIcon><HomeOutlinedIcon/></ListItemIcon>
-                        <ListItemText>Home</ListItemText>
+                    <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
+                        <ListItemIcon><AccountCircleOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                        <ListItemText>LOGIN</ListItemText>
                     </ListItem>
-                    <Divider/>
+                    <ListItem button component={Link} to="/signup" onClick={toggleDrawer}>
+                        <ListItemIcon><AddBoxOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                        <ListItemText>SIGN UP</ListItemText>
+                    </ListItem>
+                    <Divider />
+                    <ListItem button component={Link} to="/" onClick={toggleDrawer}>
+                        <ListItemIcon><HomeOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                        <ListItemText>HOME</ListItemText>
+                    </ListItem>                    
                     <ListItem button component={Link} to="/menu" onClick={toggleDrawer}>
-                        <ListItemIcon><FastfoodOutlinedIcon /></ListItemIcon>
-                        <ListItemText>Order</ListItemText>                
+                        <ListItemIcon><FastfoodOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                        <ListItemText>MENU</ListItemText>                
                     </ListItem>                
                     <ListItem button component={Link} to="/about" onClick={toggleDrawer}>
-                        <ListItemIcon><InfoOutlinedIcon /></ListItemIcon>
-                        <ListItemText>About</ListItemText>
+                        <ListItemIcon><InfoOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                        <ListItemText>ABOUT US</ListItemText>
                     </ListItem>
                 </List>
             </Drawer>

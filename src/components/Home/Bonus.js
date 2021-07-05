@@ -9,8 +9,14 @@ const useStyles = makeStyles(theme=>({
         display:'flex',
         justifyContent:'center',
         textAlign:'center',
-        backgroundColor: 'lightyellow',
-        padding: '40px 0',
+        backgroundColor: '#06AED5',
+        padding: '130px 0',
+        color: '#FFFFFF',
+        height: '400px',
+        [theme.breakpoints.down("sm")]: {
+            height: '800px',
+            padding: '100px 40px'
+        }
 
     }
 }))

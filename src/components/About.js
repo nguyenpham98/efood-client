@@ -8,7 +8,7 @@ import Hero from '../img/Home/hero.jpg'
 const useStyles = makeStyles((theme) => ({
     hero: {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Hero})`,
-        height: "500px",
+        height: "550px",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         color: "#fff",
         fontSize: "4rem",
-        marginTop: '-20px',
+        //marginTop: '-20px',
         marginBottom: '10px',
         textAlign: 'center',
         [theme.breakpoints.down("sm")]: {
