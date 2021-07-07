@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axios from 'axios'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -34,10 +35,29 @@ const useStyles = makeStyles((theme) => ({
 
 const Signup = () => {
     const classes = useStyles();
-
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const submitHandle = (e) => {
+        e.preventDefault()
+        const registered = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password
+        }
+        axios.post("http://localhost:5000/app/signup", registered)
+            .then(res => console.log(res.data))
+        setFirstName("")
+        setLastName("")
+        setEmail("")
+        setPassword("")
+    }
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
+            
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
@@ -45,7 +65,7 @@ const Signup = () => {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={submitHandle}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -56,6 +76,8 @@ const Signup = () => {
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
+                                value={firstName}
+                                onChange={e => setFirstName(e.target.value)}
                                 autoFocus
                             />
                         </Grid>
@@ -67,6 +89,8 @@ const Signup = () => {
                                 id="lastName"
                                 label="Last Name"
                                 name="lastName"
+                                value={lastName}
+                                onChange={e => setLastName(e.target.value)}
                                 autoComplete="lname"
                             />
                         </Grid>
@@ -78,6 +102,8 @@ const Signup = () => {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
                                 autoComplete="email"
                             />
                         </Grid>
@@ -90,6 +116,8 @@ const Signup = () => {
                                 label="Password"
                                 type="password"
                                 id="password"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
                                 autoComplete="current-password"
                             />
                         </Grid>

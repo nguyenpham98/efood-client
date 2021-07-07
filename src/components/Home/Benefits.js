@@ -6,12 +6,12 @@ import Benefit3 from '../../img/Home/benefit3.jpg'
 
 const useStyles= makeStyles(theme=>({
     container: {        
-        backgroundColor:'#FF8C42',
+        backgroundColor:'#ffb84d',
         textAlign: 'center',
-        height: '800px',
+        height: '1000px',
         [theme.breakpoints.down("sm")]: {
-            height: '2000px',
-            padding: '0px 40px'
+            height: '2150px',
+            padding: '0px 10px'
         }
     },
     gridContainer:{
@@ -20,19 +20,19 @@ const useStyles= makeStyles(theme=>({
     },
     card:{
         padding: '10px',
-        marginLeft: '10px',
-        marginRight: '10px',
-        marginBottom: '10px'
+        margin: '0 10px 10px 10px'
         
     },
     cardMedia:{
         height: 200,        
     },
     title:{
-        paddingTop: 10,
-        fontSize: 70,
-        fontWeight: 700,
-        color: '#F3f3ea'
+        padding: '60px 0',        
+        fontWeight: 300,
+        color: '#F3f3ea',
+        [theme.breakpoints.down("sm")]: {
+            padding: '20px 0'
+        }
     }
 }))
 
@@ -40,7 +40,7 @@ const Benefits = () => {
     const classes = useStyles()
     return (
         <div className={classes.container}>
-            <Typography variant="h4" className={classes.title}>Here's What Great About Us</Typography><br/>
+            <Typography variant="h2" className={classes.title}>Here's What Great About Us</Typography><br/>
             <Grid container className={classes.gridContainer} >
                 <Grid item xs={12} md={3}>
                     <Card className={classes.card}>

@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme)=>({
     hero: {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${hero})`,
         height: "500px",
-        backgroundPosition: "center",
+        backgroundPosition: "bottom 10% left 50%",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         position: "relative",

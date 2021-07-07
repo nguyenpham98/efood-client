@@ -1,4 +1,4 @@
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core';
+import { createMuiTheme, makeStyles, ThemeProvider, responsiveFontSizes } from '@material-ui/core';
 import React, { useState } from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import { CartContext } from './components/CartContext';
@@ -12,11 +12,10 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Success from './components/Success';
 import NotFound from './components/NotFound'
-import Playground from './components/Playground';
 import Login from './components/entry/Login';
 import Signup from './components/entry/Signup';
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
     fontFamily: [
       '-apple-system',
@@ -32,7 +31,7 @@ const theme = createMuiTheme({
     ].join(','),
   },
 });
-
+theme = responsiveFontSizes(theme)
 
 
 const useStyles = makeStyles(theme=>({
@@ -62,8 +61,6 @@ function App() {
                 <Route path="/success" component={Success}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/signup" component={Signup}/>
-                {/* comment Playground out on production */}
-                <Route path="/fun" component={Playground}/>
                 <Route component={NotFound}/>                           
               </Switch>
           </div>
