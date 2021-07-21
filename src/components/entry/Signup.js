@@ -5,12 +5,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios'
+import {useHistory} from 'react-router-dom'
+import { Alert } from '@material-ui/lab';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -34,25 +35,42 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Signup = () => {
-    const classes = useStyles();
+    const classes = useStyles()
+    const history = useHistory()
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [password2, setPassword2] = useState("")
+    const [error, setError] = useState(false)
+    const [message, setMessage] = useState("")
     const submitHandle = (e) => {
         e.preventDefault()
+        if (password.length < 8){
+            setError(true)
+            setMessage("Password must be longer than 8 characters")
+            return
+        }
+        if (password !== password2){
+            setError(true)
+            setMessage("Repeat password did not match")
+            return
+        }
         const registered = {
             firstName: firstName,
             lastName: lastName,
             email: email,
             password: password
         }
-        axios.post("http://localhost:5000/app/signup", registered)
+        axios.post("http://localhost:5000/register", registered)
             .then(res => console.log(res.data))
         setFirstName("")
         setLastName("")
         setEmail("")
         setPassword("")
+        setPassword2("")
+        setMessage("A new account is created successfully. You can now login with your new account.")
+        setError(false)
     }
     return (
         <Container component="main" maxWidth="xs">
@@ -118,7 +136,20 @@ const Signup = () => {
                                 id="password"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                                autoComplete="current-password"
+                            />
+                            
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                name="password2"
+                                label="Repeat Password"
+                                type="password"
+                                id="password2"
+                                value={password2}
+                                onChange={e => setPassword2(e.target.value)}
                             />
                         </Grid>
                     </Grid>
@@ -133,16 +164,19 @@ const Signup = () => {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link variant="body2" onClick={()=> history.push('/login')}>
                                 Already have an account? Sign in
                             </Link>
                         </Grid>
                     </Grid>
                 </form>
             </div>
-            <Box mt={5}>
-                
-            </Box>
+            {(error && message) &&
+                <Alert severity="error">{message}</Alert>
+            }
+            {(!error && message) &&
+                <Alert severity="success">{message}</Alert>
+            }
         </Container>
     );
 }

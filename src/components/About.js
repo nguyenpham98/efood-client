@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         color: "#fff",
         fontSize: "4rem",
-        //marginTop: '-20px',
         marginBottom: '10px',
         textAlign: 'center',
         [theme.breakpoints.down("sm")]: {
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title:{
         textAlign: 'center',
-        margin:'20px'
+        margin:'60px'
     },
     image: {
         height: 600,
@@ -44,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         marginBottom: '20px'
+    },
+    gridContainer: {
+        marginBottom: '100px'
     }
     
 }))
@@ -54,13 +56,13 @@ const About = () => {
         <div>
             <Box className={classes.hero}>
                 <Box>
-                    <Typography variant="h3">About E-Food</Typography>
-                    <Typography variant="h6">We are not a company. We are a collection obsessed with perfecting the art of food.</Typography>
+                    <Typography variant="h2">About 220°C</Typography>
+                    <Typography variant="h6">- Insert something here - </Typography>
                 </Box>
             </Box>
             <Container className={classes.container}>
-                <Typography variant="h3" className={classes.title} >Our Products</Typography>                
-                <Grid container>                
+                <Typography variant="h2" className={classes.title} >Our Products</Typography>                
+                <Grid container className={classes.gridContainer}>                
                     <Grid item xs={12} md={3}>
                         <img src={Products} className={classes.image} alt="products"/>                        
                     </Grid>
@@ -74,8 +76,8 @@ const About = () => {
                         <Typography className={classes.content}>We have a wide selection of drinks, from either Lite, Strong, to Casual. Ingredients are stocked weekly to make sure everything is fresh.</Typography>
                     </Grid>
                 </Grid>
-                <Typography variant="h3" className={classes.title}>Our Goals</Typography>
-                <Grid container>
+                <Typography variant="h2" className={classes.title}>Our Goals</Typography>
+                <Grid container className={classes.gridContainer}>
                     <Grid item xs={12} md={3}  >
                         <Typography variant="h6" className={classes.content}>Quality food</Typography>
                         <Typography className={classes.content}>We thrive to the bottom of the Earth to find the secret to the best burger globally.</Typography>
@@ -89,8 +91,8 @@ const About = () => {
                         <img src={Goal} className={classes.image} alt="goals" />
                     </Grid>
                 </Grid>
-                <Typography variant="h3" className={classes.title} >Our Story</Typography>
-                <Grid container>
+                <Typography variant="h2" className={classes.title} >Our Story</Typography>
+                <Grid container className={classes.gridContainer}>
                     <Grid item xs={12} md={4}>
                         <img src={Owners} className={classes.image} alt="owners" />
                     </Grid>

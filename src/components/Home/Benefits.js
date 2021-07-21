@@ -8,11 +8,18 @@ const useStyles= makeStyles(theme=>({
     container: {        
         backgroundColor:'#ffb84d',
         textAlign: 'center',
-        height: '1000px',
+        height: '1100px',
+        
         [theme.breakpoints.down("sm")]: {
-            height: '2150px',
+            height: '2450px',
             padding: '0px 10px'
-        }
+        },
+        [theme.breakpoints.between("sm", "md")]: {
+            height: '1700px',
+            padding: '0px 10px'
+        },
+        
+        
     },
     gridContainer:{
         display:'flex',
@@ -20,8 +27,10 @@ const useStyles= makeStyles(theme=>({
     },
     card:{
         padding: '10px',
-        margin: '0 10px 10px 10px'
-        
+        margin: '0 10px 10px 10px',
+        [theme.breakpoints.down("sm")]: {
+            marginBottom: '30px'
+        },
     },
     cardMedia:{
         height: 200,        
@@ -42,7 +51,7 @@ const Benefits = () => {
         <div className={classes.container}>
             <Typography variant="h2" className={classes.title}>Here's What Great About Us</Typography><br/>
             <Grid container className={classes.gridContainer} >
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={12} md={6} lg={3}>
                     <Card className={classes.card}>
                         <CardMedia
                             className={classes.cardMedia}
@@ -55,7 +64,7 @@ const Benefits = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={12} md={6} lg={3}>
                     <Card className={classes.card}>
                         <CardMedia
                             className={classes.cardMedia}
@@ -68,7 +77,7 @@ const Benefits = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} sm={12} md={6} lg={3}>
                     <Card className={classes.card}>
                         <CardMedia
                             className={classes.cardMedia}

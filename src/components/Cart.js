@@ -1,5 +1,5 @@
 import { loadStripe } from "@stripe/stripe-js";
-import { Button, Container, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import React, { useContext, useEffect, useState, Fragment } from 'react'
 import { DatePicker, TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -10,6 +10,8 @@ import axios from 'axios';
 import Suggestion from "./Suggestion";
 import {availableTime} from './constants/availableTime'
 import { unavailableDate } from "./constants/unavailableDate";
+import { UserContext } from "./UserContext";
+import {useHistory} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -52,12 +54,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Cart = () => {
     const classes = useStyles()
+    const history = useHistory()
     const {cart, setCart} = useContext(CartContext); 
+    const user = useContext(UserContext)
     const [mode, setMode] = useState("")
     const [time, setTime] = useState(new Date())
     const [date, setDate] = useState(new Date())
     const [waitTime, setWaitTime] = useState(0)
     const [message, setMessage] = useState("")
+    const [open, setOpen] = useState(false)
     useEffect(()=>{
         setTime(new Date())
         setDate(new Date())
@@ -122,41 +127,52 @@ const Cart = () => {
         if (parseInt(month) < 10) month = "0" + month    
         return unavailableDate.includes(month + "/" + day)
     }
+    // check logged in or not
+    const isLoggedIn = () => {
+        return user.firstName ? true : false
+    }
+
     // check if data provided is legit. if true, go to Stripe
     const handleClick = () => {
-        // pickup-today allowed if ordered time is valid and today is not off
-        if(mode==="pickup-today") {
-            if (!validTime(time)){
-                setMessage("Sorry, We Would Be Closed By Then. Please Choose A Different Time.")
-                return
+        if (!isLoggedIn()) history.push('/login')
+        
+        else {
+            // pickup-today allowed if ordered time is valid and today is not off
+            if (mode === "pickup-today") {
+                if (!validTime(time)) {
+                    setMessage("Sorry, We Would Be Closed By Then. Please Choose A Different Time.")
+                    return
+                }
+                else if (isTodayOff()) {
+                    setMessage("Sorry, We Are Taking Today Off. Please Come Back When We Are Open Again.")
+                    return
+                }
             }
-            else if (isTodayOff()){
-                setMessage("Sorry, We Are Taking Today Off. Please Come Back When We Are Open Again.")
-                return
+            // pickup-later and delivery-later allowed if ordered time is valid and date is not off
+            else if (mode === "pickup-later") {
+                if (!validTime(time)) {
+                    setMessage("Sorry, We Would Be Closed By Then. Please Choose A Different Time.")
+                    return
+                }
+                else if (!validDate(date)) {
+                    setMessage("Sorry, We Are Not Open For That Date. Please Choose A Different Date.")
+                    return
+                }
             }
+            else if (mode === "delivery-later") {
+                if (!validTime(time)) {
+                    setMessage("Sorry, We Would Be Closed By Then. Please Choose A Different Time.")
+                    return
+                }
+                else if (!validDate(date)) {
+                    setMessage("Sorry, We Are Not Open For That Date. Please Choose A Different Date.")
+                    return
+                }
+            }
+            handleCheckout()
         }
-        // pickup-later and delivery-later allowed if ordered time is valid and date is not off
-        else if(mode==="pickup-later") {
-            if (!validTime(time)){
-                setMessage("Sorry, We Would Be Closed By Then. Please Choose A Different Time.")
-                return
-            }
-            else if (!validDate(date)){
-                setMessage("Sorry, We Are Not Open For That Date. Please Choose A Different Date.")
-                return
-            }
-        }
-        else if (mode === "delivery-later"){
-            if (!validTime(time)){
-                setMessage("Sorry, We Would Be Closed By Then. Please Choose A Different Time.")
-                return
-            }
-            else if (!validDate(date)){
-                setMessage("Sorry, We Are Not Open For That Date. Please Choose A Different Date.")
-                return
-            }
-        }
-        handleCheckout()
+
+        
     }
 
     const handleCheckout = async () => {
@@ -167,9 +183,14 @@ const Cart = () => {
                 order.push({ price: cart[key].item.id, quantity: cart[key].quantity, tax_rates: ['txr_1IsJJvEb0hpNeLoZMFfNI8U0'] });
             })
         }    
+        // clear local cart
+        localStorage.removeItem('cart')
+        localStorage.removeItem('total')
+        setCart([])
+        // route depends on shipping method
         if(mode==="pickup-today" || mode==="pickup-later") {
-            order.push({ price_data: { currency: 'USD', product_data: { name: "Pick-Up Schedule" }, unit_amount: 0 }, quantity: 1, description: mode + " | " + time + " | " + date })
-            const response = await axios.post('/create-checkout-session-pickup', order);
+            order.push({ price_data: { currency: 'USD', product_data: { name: "Pick-Up Schedule" }, unit_amount: 0 }, quantity: 1, description: mode + " | " + time.toLocaleTimeString() + " | " + date.toLocaleDateString('en-US') })
+            const response = await axios.post('/create-checkout-session-pickup', {order:order, email: user.email});
             const result = await stripe.redirectToCheckout({
                 sessionId: response.data.id,
             })
@@ -177,8 +198,8 @@ const Cart = () => {
         }
         if(mode==="delivery-today" || mode==="delivery-later") {
             const deliveryFee = (Number(localStorage.getItem('total'))*15).toFixed(0)
-            order.push({ price_data: { currency: 'USD', product_data: { name: "Delivery Fee" }, unit_amount_decimal: deliveryFee }, quantity: 1, description: mode + " | " + time + " | " + date })
-            const response = await axios.post('/create-checkout-session-delivery', order);
+            order.push({ price_data: { currency: 'USD', product_data: { name: "Delivery Fee" }, unit_amount_decimal: deliveryFee }, quantity: 1, description: mode + " | " + time.toLocaleTimeString() + " | " + date.toLocaleDateString('en-US') })
+            const response = await axios.post('/create-checkout-session-delivery', { order: order, email: user.email });
             const result = await stripe.redirectToCheckout({
                 sessionId: response.data.id,
             })            
@@ -245,7 +266,7 @@ const Cart = () => {
                             {message}
                         </Alert>
                     }
-                    <Button onClick={() => handleClick()} variant="contained" color="primary" className={classes.btn}>Checkout</Button>
+                    <Button onClick={() => setOpen(true)} variant="contained" color="primary" className={classes.btn}>Checkout</Button>
                 </div>
             }
             {(mode==="pickup-later") && 
@@ -273,11 +294,31 @@ const Cart = () => {
                             {message}
                         </Alert>
                     }
-                    <Button onClick={() => handleClick()} variant="contained" color="primary" className={classes.btn}>Checkout</Button>
+                    <Button onClick={() => setOpen(true)} variant="contained" color="primary" className={classes.btn}>Checkout</Button>
                 </div>
             }
             </Container>
-                           
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false) }
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Make sure you have everything you need in your cart. Once you hit agree, there is no going back.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=>setOpen(false)} color="primary">
+                        Disagree
+                    </Button>
+                    <Button onClick={() => {setOpen(false); handleClick()}} color="primary" autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

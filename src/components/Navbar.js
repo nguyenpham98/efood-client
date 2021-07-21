@@ -1,4 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState,useContext} from 'react'
+import {useHistory} from 'react-router-dom'
+import {UserContext} from './UserContext'
+import axios from 'axios'
 import {AppBar, Toolbar, Button, IconButton, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider, Avatar, Box} from '@material-ui/core'
 import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
@@ -9,6 +12,8 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+import TimelineOutlinedIcon from '@material-ui/icons/TimelineOutlined';
 import Logo from '../img/logo.jpg'
 
 const useStyles = makeStyles((theme) => ({
@@ -34,10 +39,20 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
+    const history = useHistory()
+    const user = useContext(UserContext)
     const [isDrawerOpened, setIsDrawerOpened] = useState(false);
     const toggleDrawer= () => {
         setIsDrawerOpened(!isDrawerOpened)
     }   
+    const logout = () => {
+        axios.post('http://localhost:5000/logout', {}, { withCredentials: true })
+            .then(() => {
+                user.setFirstName("")
+                history.push("/")
+            })
+            .catch(err => console.log(err))
+    }
     return (
         <div>
             <AppBar position="static" className={classes.appBar}  >
@@ -55,15 +70,32 @@ const Navbar = () => {
             </AppBar>
             <Drawer anchor='left' open={isDrawerOpened} onClose={toggleDrawer} >
                 <List className={classes.list}>
-                    <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
-                        <ListItemIcon><AccountCircleOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
-                        <ListItemText>LOGIN</ListItemText>
-                    </ListItem>
-                    <ListItem button component={Link} to="/signup" onClick={toggleDrawer}>
-                        <ListItemIcon><AddBoxOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
-                        <ListItemText>SIGN UP</ListItemText>
-                    </ListItem>
-                    <Divider />
+                    {!user.firstName ?
+                        <div>
+                            <ListItem button component={Link} to="/login" onClick={toggleDrawer}>
+                                <ListItemIcon><AccountCircleOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                                <ListItemText>LOGIN</ListItemText>
+                            </ListItem>
+                            <ListItem button component={Link} to="/signup" onClick={toggleDrawer}>
+                                <ListItemIcon><AddBoxOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
+                                <ListItemText>SIGN UP</ListItemText>
+                            </ListItem>
+                            <Divider />
+                        </div>:
+                        <div>
+                            <ListItem button component={Link} to="/order-history" onClick={toggleDrawer}>
+                                <ListItemIcon><TimelineOutlinedIcon color="primary" fontSize="large" className={classes.listItem} /></ListItemIcon>
+                                <ListItemText>ORDER HISTORY</ListItemText>
+                            </ListItem>
+                            <ListItem button onClick={logout}>
+                                <ListItemIcon><ExitToAppOutlinedIcon color="primary" fontSize="large" className={classes.listItem} /></ListItemIcon>
+                                <ListItemText>LOGOUT</ListItemText>
+                            </ListItem>
+                            <Divider />
+                        </div>
+
+                }
+                    
                     <ListItem button component={Link} to="/" onClick={toggleDrawer}>
                         <ListItemIcon><HomeOutlinedIcon color="primary" fontSize="large" className={classes.listItem}/></ListItemIcon>
                         <ListItemText>HOME</ListItemText>

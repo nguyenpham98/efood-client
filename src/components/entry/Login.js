@@ -1,19 +1,18 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import {useHistory} from 'react-router-dom'
+import {UserContext} from '../UserContext'
+import axios from 'axios'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import { Alert } from '@material-ui/lab';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
-
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -36,7 +35,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
-    const classes = useStyles();
+    const classes = useStyles()
+    let history = useHistory()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState(false)
+    const [message, setMessage] = useState("")
+    const user = useContext(UserContext)
+
+    const loginUser = (e) => {
+        e.preventDefault()
+        const data = {email, password}
+        axios.post('http://localhost:5000/login', data, {withCredentials: true})
+        .then(async (response) => {
+            
+            await user.setFirstName(response.data.firstName)
+            await user.setEmail(response.data.email)
+            await user.setOrderHistory(response.data.orderHistory)
+            setEmail("")
+            setPassword("")
+            setError(false)
+            setMessage("")
+            history.push('/')
+        })
+        .catch(err => {
+            setError(true)
+            setMessage(err.response.data.msg)
+        })
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -48,7 +74,7 @@ const Login = () => {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={loginUser}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -57,6 +83,8 @@ const Login = () => {
                         id="email"
                         label="Email Address"
                         name="email"
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}
                         autoComplete="email"
                         autoFocus
                     />
@@ -69,11 +97,9 @@ const Login = () => {
                         label="Password"
                         type="password"
                         id="password"
+                        value={password}
+                        onChange={(e)=>setPassword(e.target.value)}
                         autoComplete="current-password"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
                     />
                     <Button
                         type="submit"
@@ -86,21 +112,24 @@ const Login = () => {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
+                            <Link variant="body2" onClick={()=>history.push('/forgot-password')}>
                                 Forgot password?
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link variant="body2" onClick={()=> history.push('/signup')}>
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
                     </Grid>
                 </form>
             </div>
-            <Box mt={8}>
-                
-            </Box>
+            {(message ) &&
+                <Alert severity="error" style={{marginTop: '20px'}}>
+                    {message}
+                </Alert>
+            }
+            
         </Container>
     );
 }

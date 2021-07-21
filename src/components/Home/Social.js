@@ -8,30 +8,36 @@ const useStyles = makeStyles(theme => ({
         height: '600px',
         backgroundColor: '#ffd699',
         padding: '10px 0px',
+        
         [theme.breakpoints.down("sm")]: {
             height: '900px', 
             textAlign: 'center',
-        }
+        },
+        [theme.breakpoints.up("sm")]: {
+            height: '700px',
+            textAlign: 'center',
+        },
+        
     },
     card: {
         height:'300px',
         margin: '30px',   
-        
         [theme.breakpoints.down("sm")]: {
             height: '220px',
             margin: '15px 10px',
-            
-        }
+        },
+        [theme.breakpoints.up("sm")]: {
+            height: '270px',
+            margin: '15px 10px',
+        },
+        
     },
     title: {
-        
         paddingTop: '100px',
         fontWeight: 300,
         [theme.breakpoints.down("sm")]: {
             paddingTop: '10px'
-
         }
-        
     }
 }))
 
@@ -55,7 +61,7 @@ const Social = () => {
             <Typography variant="h2" className={classes.title}>Check Out Our Best Reviews</Typography>
             
             <Grid container spacing={3} direction="row" justify="center" alignItems="center">
-                <Grid item xs={12} sm={3} >
+                <Grid item xs={12} sm={6} md={4} lg={3} >
                     <Card className={classes.card}>
                         <CardHeader
                             avatar={
@@ -70,7 +76,7 @@ const Social = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <Card className={classes.card}>
                         <CardHeader
                             avatar={
@@ -85,7 +91,7 @@ const Social = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <Card className={classes.card }>
                         <CardHeader
                             avatar={

@@ -1,10 +1,7 @@
 import { Box, Button, makeStyles, Typography } from '@material-ui/core'
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import hero from '../img/Home/hero.jpg'
-import { CartContext } from './CartContext'
-
-
 
 const useStyles = makeStyles((theme) => ({
     hero: {
@@ -31,17 +28,6 @@ const useStyles = makeStyles((theme) => ({
 const Success = () => {
     const classes = useStyles()
     const history = useHistory()
-    const {setCart} = useContext(CartContext)
-    
-    
-    useEffect(() => {        
-        const clearAll = () => {
-            localStorage.removeItem('cart')
-            localStorage.removeItem('total')
-            setCart([])
-        }
-        clearAll();
-    }, [setCart])
     return (
         <Box className={classes.hero}>
             <Box>
@@ -49,6 +35,7 @@ const Success = () => {
                 <Typography>Check your email for the order receipt number.</Typography>
                 <Button variant="contained" color="primary" onClick={() => history.push('/menu')}>Continue Shopping</Button>
             </Box>
+            
         </Box>
     )
 }
