@@ -190,7 +190,7 @@ const Cart = () => {
         // route depends on shipping method
         if(mode==="pickup-today" || mode==="pickup-later") {
             order.push({ price_data: { currency: 'USD', product_data: { name: "Pick-Up Schedule" }, unit_amount: 0 }, quantity: 1, description: mode + " | " + time.toLocaleTimeString() + " | " + date.toLocaleDateString('en-US') })
-            const response = await axios.post('/create-checkout-session-pickup', {order:order, email: user.email});
+            const response = await axios.post('https://react-express-heroku-nguyen.herokuapp.com/create-checkout-session-pickup', {order:order, email: user.email});
             const result = await stripe.redirectToCheckout({
                 sessionId: response.data.id,
             })
@@ -199,7 +199,7 @@ const Cart = () => {
         if(mode==="delivery-today" || mode==="delivery-later") {
             const deliveryFee = (Number(localStorage.getItem('total'))*15).toFixed(0)
             order.push({ price_data: { currency: 'USD', product_data: { name: "Delivery Fee" }, unit_amount_decimal: deliveryFee }, quantity: 1, description: mode + " | " + time.toLocaleTimeString() + " | " + date.toLocaleDateString('en-US') })
-            const response = await axios.post('/create-checkout-session-delivery', { order: order, email: user.email });
+            const response = await axios.post('https://react-express-heroku-nguyen.herokuapp.com/create-checkout-session-delivery', { order: order, email: user.email });
             const result = await stripe.redirectToCheckout({
                 sessionId: response.data.id,
             })            

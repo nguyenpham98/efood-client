@@ -62,7 +62,7 @@ const Signup = () => {
             email: email,
             password: password
         }
-        axios.post("http://localhost:5000/register", registered)
+        axios.post("https://react-express-heroku-nguyen.herokuapp.com/register", registered)
             .then(res => console.log(res.data))
         setFirstName("")
         setLastName("")

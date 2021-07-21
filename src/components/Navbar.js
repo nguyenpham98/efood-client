@@ -46,7 +46,7 @@ const Navbar = () => {
         setIsDrawerOpened(!isDrawerOpened)
     }   
     const logout = () => {
-        axios.post('http://localhost:5000/logout', {}, { withCredentials: true })
+        axios.post('https://react-express-heroku-nguyen.herokuapp.com/logout', {}, { withCredentials: true })
             .then(() => {
                 user.setFirstName("")
                 history.push("/")

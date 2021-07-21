@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
 const MenuItems = () => {
     const {category} = useParams()
     
-    //const { data: items, isLoading, error } = useFetch(`https://react-express-heroku-nguyen.herokuapp.com/api/${category}`);
-    const { data: items, isLoading, error } = useFetch(`/api/${category}`);
+    const { data: items, isLoading, error } = useFetch(`https://react-express-heroku-nguyen.herokuapp.com/api/${category}`);
+    //const { data: items, isLoading, error } = useFetch(`/api/${category}`);
     const classes = useStyles()
     const history = useHistory()
     const handleClick = (category,id) => {

@@ -38,7 +38,7 @@ const ForgotPassword = () => {
     const sendRequest = (e) => {
         e.preventDefault()
         const data = { email }
-        axios.post('http://localhost:5000/request-password-reset', data, { withCredentials: true })
+        axios.post('https://react-express-heroku-nguyen.herokuapp.com/request-password-reset', data, { withCredentials: true })
             .then(async (response) => {
                 setEmail("")
                 setError(false)

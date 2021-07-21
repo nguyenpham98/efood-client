@@ -46,8 +46,8 @@ const MenuItem = () => {
     const {category, id} = useParams();
     const classes = useStyles();
     const history = useHistory()
-    //const { data: items, isLoading, error } = useFetch(`https://react-express-heroku-nguyen.herokuapp.com/api/${category}/${id}`)
-    const { data: items, isLoading, error } = useFetch(`/api/${category}/${id}`)
+    const { data: items, isLoading, error } = useFetch(`https://react-express-heroku-nguyen.herokuapp.com/api/${category}/${id}`)
+    //const { data: items, isLoading, error } = useFetch(`/api/${category}/${id}`)
     const [msg, setMsg] = useState("")
     const handleCallback = (data) => {
         setMsg(data)

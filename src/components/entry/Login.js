@@ -46,7 +46,7 @@ const Login = () => {
     const loginUser = (e) => {
         e.preventDefault()
         const data = {email, password}
-        axios.post('http://localhost:5000/login', data, {withCredentials: true})
+        axios.post('https://react-express-heroku-nguyen.herokuapp.com/login', data, {withCredentials: true})
         .then(async (response) => {
             
             await user.setFirstName(response.data.firstName)
