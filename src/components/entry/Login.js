@@ -124,7 +124,7 @@ const Login = () => {
                     </Grid>
                 </form>
             </div>
-            {(message ) &&
+            {(message && error ) &&
                 <Alert severity="error" style={{marginTop: '20px'}}>
                     {message}
                 </Alert>
