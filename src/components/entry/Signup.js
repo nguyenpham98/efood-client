@@ -44,6 +44,12 @@ const Signup = () => {
     const [password2, setPassword2] = useState("")
     const [error, setError] = useState(false)
     const [message, setMessage] = useState("")
+    let url
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        url = 'http://localhost:5000'
+    } else {
+        url = 'https://react-express-heroku-nguyen.herokuapp.com'
+    }
     const submitHandle = (e) => {
         e.preventDefault()
         if (password.length < 8){
@@ -62,7 +68,7 @@ const Signup = () => {
             email: email,
             password: password
         }
-        axios.post("https://react-express-heroku-nguyen.herokuapp.com/register", registered)
+        axios.post(`${url}/register`, registered)
             .then(res => console.log(res.data))
         setFirstName("")
         setLastName("")

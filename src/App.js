@@ -52,9 +52,14 @@ function App() {
   const [email, setEmail] = useState("")
   const [orderHistory, setOrderHistory] = useState([])
   const classes = useStyles()
-
+  let url
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    url = 'http://localhost:5000'
+  } else {
+    url = 'https://react-express-heroku-nguyen.herokuapp.com'
+  }
   useEffect(() => {
-    axios.get('https://react-express-heroku-nguyen.herokuapp.com/user', { withCredentials: true })
+    axios.get(`${url}/user`, { withCredentials: true })
       .then(response => {
         setFirstName(response.data.firstName)
         setEmail(response.data.email)

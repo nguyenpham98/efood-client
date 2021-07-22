@@ -34,9 +34,13 @@ const useStyles = makeStyles((theme) => ({
 // menu/category
 const MenuItems = () => {
     const {category} = useParams()
-    
-    const { data: items, isLoading, error } = useFetch(`https://react-express-heroku-nguyen.herokuapp.com/api/${category}`);
-    //const { data: items, isLoading, error } = useFetch(`/api/${category}`);
+    let url
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+       url = 'http://localhost:5000'
+    } else {
+        url = 'https://react-express-heroku-nguyen.herokuapp.com'
+    }
+    const { data: items, isLoading, error } = useFetch(`${url}/api/${category}`);
     const classes = useStyles()
     const history = useHistory()
     const handleClick = (category,id) => {

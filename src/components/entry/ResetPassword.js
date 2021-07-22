@@ -36,12 +36,18 @@ const ResetPassword = () => {
     const [repeatPassword, setRepeatPassword] = useState("")
     const [error, setError] = useState(false)
     const [message, setMessage] = useState("")
+    let url
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        url = 'http://localhost:5000'
+    } else {
+        url = 'https://react-express-heroku-nguyen.herokuapp.com'
+    }
     const sendRequest = (e) => {
         e.preventDefault()
         if (password !== repeatPassword) return
         
         const data = { id, token, password }
-        axios.post('https://react-express-heroku-nguyen.herokuapp.com/reset-password', data, { withCredentials: true })
+        axios.post(`${url}/reset-password`, data, { withCredentials: true })
             .then(async (response) => {
                 setPassword("")
                 setRepeatPassword("")

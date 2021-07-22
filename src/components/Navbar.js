@@ -45,8 +45,14 @@ const Navbar = () => {
     const toggleDrawer= () => {
         setIsDrawerOpened(!isDrawerOpened)
     }   
+    let url
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        url = 'http://localhost:5000'
+    } else {
+        url = 'https://react-express-heroku-nguyen.herokuapp.com'
+    }
     const logout = () => {
-        axios.post('https://react-express-heroku-nguyen.herokuapp.com/logout', {}, { withCredentials: true })
+        axios.post(`${url}/logout`, {}, { withCredentials: true })
             .then(() => {
                 user.setFirstName("")
                 history.push("/")

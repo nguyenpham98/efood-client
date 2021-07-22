@@ -42,11 +42,16 @@ const Login = () => {
     const [error, setError] = useState(false)
     const [message, setMessage] = useState("")
     const user = useContext(UserContext)
-
+    let url
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        url = 'http://localhost:5000'
+    } else {
+        url = 'https://react-express-heroku-nguyen.herokuapp.com'
+    }
     const loginUser = (e) => {
         e.preventDefault()
         const data = {email, password}
-        axios.post('https://react-express-heroku-nguyen.herokuapp.com/login', data, {withCredentials: true})
+        axios.post(`${url}/login`, data, {withCredentials: true})
         .then(async (response) => {
             
             await user.setFirstName(response.data.firstName)

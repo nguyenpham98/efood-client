@@ -46,8 +46,13 @@ const MenuItem = () => {
     const {category, id} = useParams();
     const classes = useStyles();
     const history = useHistory()
-    const { data: items, isLoading, error } = useFetch(`https://react-express-heroku-nguyen.herokuapp.com/api/${category}/${id}`)
-    //const { data: items, isLoading, error } = useFetch(`/api/${category}/${id}`)
+    let url
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        url = 'http://localhost:5000'
+    } else {
+        url = 'https://react-express-heroku-nguyen.herokuapp.com'
+    }
+    const { data: items, isLoading, error } = useFetch(`${url}/api/${category}/${id}`)
     const [msg, setMsg] = useState("")
     const handleCallback = (data) => {
         setMsg(data)
