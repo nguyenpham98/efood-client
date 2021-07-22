@@ -68,7 +68,7 @@ const Signup = () => {
             email: email,
             password: password
         }
-        axios.post(`${url}/register`, registered)
+        axios.post(`${url}/register`, registered, {withCredentials: true})
             .then(res => console.log(res.data))
         setFirstName("")
         setLastName("")

@@ -59,14 +59,14 @@ function App() {
     url = 'https://react-express-heroku-nguyen.herokuapp.com'
   }
   useEffect(() => {
-    axios.get(`${url}/user`)
+    axios.get(`${url}/user`, { withCredentials: true })
       .then(response => {
         setFirstName(response.data.firstName)
         setEmail(response.data.email)
         setOrderHistory(response.data.orderHistory)
       })
       .catch(err => console.log(err))
-  }, [url])
+  })
   
   return (
     <ThemeProvider theme={theme} >

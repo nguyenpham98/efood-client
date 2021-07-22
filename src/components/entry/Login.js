@@ -51,7 +51,7 @@ const Login = () => {
     const loginUser = (e) => {
         e.preventDefault()
         const data = {email, password}
-        axios.post(`${url}/login`, data)
+        axios.post(`${url}/login`, data, {withCredentials: true})
         .then(async (response) => {
             
             await user.setFirstName(response.data.firstName)

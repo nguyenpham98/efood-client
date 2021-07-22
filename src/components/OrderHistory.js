@@ -19,7 +19,7 @@ const OrderHistory = () => {
         <Container>
             <Typography variant="h4" className={classes.header}>{user.firstName}'s Orders</Typography>
             {user.orderHistory.map((item, index) => (
-                <TableContainer component={Paper} style={{marginBottom: '40px'}}>
+                <TableContainer component={Paper} style={{marginBottom: '40px'}} key={index}>
                     <Table stickyHeader className={classes.table} aria-label="simple table">
                         <TableHead>
                             <TableRow>
