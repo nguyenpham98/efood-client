@@ -67,8 +67,6 @@ function App() {
       })
       .catch(err => console.log(err))
   }, [url])
-
-
   
   return (
     <ThemeProvider theme={theme} >
