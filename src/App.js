@@ -54,7 +54,7 @@ function App() {
   const classes = useStyles()
 
   useEffect(() => {
-    axios.get('http://localhost:5000/user', { withCredentials: true })
+    axios.get('https://react-express-heroku-nguyen.herokuapp.com/user', { withCredentials: true })
       .then(response => {
         setFirstName(response.data.firstName)
         setEmail(response.data.email)
