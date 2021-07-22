@@ -59,6 +59,7 @@ function App() {
     url = 'https://react-express-heroku-nguyen.herokuapp.com'
   }
   useEffect(() => {
+    axios.defaults.withCredentials = true
     axios.get(`${url}/user`, { withCredentials: true })
       .then(response => {
         setFirstName(response.data.firstName)
