@@ -66,7 +66,7 @@ function App() {
         setOrderHistory(response.data.orderHistory)
       })
       .catch(err => console.log(err))
-  }, [])
+  }, [url])
 
 
   
